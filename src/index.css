@@ -5,6 +5,80 @@
   --font-sans:
     'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif;
+
+  /* Opinionated easing curves — share a common motion vocabulary */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  /* Default transition feel — 200ms / ease-out-quart reads as polished */
+  --default-transition-duration: 200ms;
+  --default-transition-timing-function: var(--ease-out-quart);
+
+  /* Reusable keyframe animations driven by Radix data-state attributes */
+  --animate-fade-in: fade-in 180ms var(--ease-out-quart);
+  --animate-fade-out: fade-out 150ms var(--ease-out-quart);
+  --animate-scale-in: scale-in 200ms var(--ease-out-expo);
+  --animate-scale-out: scale-out 150ms var(--ease-out-quart);
+  --animate-slide-up: slide-up 240ms var(--ease-out-expo);
+  --animate-slide-down: slide-down 200ms var(--ease-out-quart);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes scale-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slide-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 
 html {
