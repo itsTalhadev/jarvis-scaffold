@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "name": "react-vite",
+  "version": "1.0.0",
+  "displayName": "React + Vite + Tailwind v4",
+  "description": "Default Jarvis scaffold: React 19, Vite 7, Tailwind v4, Redux Toolkit, react-router v7, motion, Radix primitives, Inter font.",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "mountPoints": {
+    "appRoot": "src/App.tsx",
+    "routesContainer": "src/App.tsx",
+    "globalStyles": "src/index.css",
+    "entryHtml": "index.html"
+  },
+  "editable": [
+    "src/App.tsx",
+    "src/pages/**",
+    "src/components/**",
+    "!src/components/ui/**",
+    "!src/components/transitions/**",
+    "src/features/**",
+    "src/hooks/**",
+    "src/lib/**",
+    "!src/lib/cn.ts",
+    "src/mock/**",
+    "src/store/**",
+    "src/i18n/**",
+    "src/seo/**",
+    "src/content/**",
+    "src/index.css",
+    "index.html",
+    "public/**",
+    "!public/favicon.svg"
+  ],
+  "locked": [
+    "package.json",
+    "package-lock.json",
+    "tsconfig.json",
+    "tsconfig.app.json",
+    "tsconfig.node.json",
+    "vite.config.ts",
+    ".prettierrc.json",
+    ".prettierignore",
+    "eslint.config.js",
+    ".gitignore",
+    "manifest.json",
+    "JARVIS.md",
+    "README.md",
+    "src/main.tsx",
+    "src/components/ui/**",
+    "src/components/transitions/**",
+    "src/lib/cn.ts"
+  ],
+  "substitutions": [
+    {
+      "file": "package.json",
+      "type": "json",
+      "jsonPath": "name",
+      "var": "PROJECT_SLUG"
+    },
+    {
+      "file": "index.html",
+      "type": "regex",
+      "pattern": "<title>[^<]*</title>",
+      "replacement": "<title>{{PROJECT_NAME}}</title>"
+    }
+  ],
+  "primitives": {
+    "ui": [
+      { "import": "@/components/ui/Button", "exports": ["Button"] },
+      { "import": "@/components/ui/Dialog", "exports": ["Dialog", "DialogTrigger", "DialogContent", "DialogHeader", "DialogTitle", "DialogDescription", "DialogFooter", "DialogClose"] },
+      { "import": "@/components/ui/Tooltip", "exports": ["Tooltip", "TooltipTrigger", "TooltipContent"] },
+      { "import": "@/components/ui/Skeleton", "exports": ["Skeleton"] }
+    ],
+    "transitions": [
+      { "import": "@/components/transitions/PageTransition", "exports": ["PageTransition"] }
+    ],
+    "lib": [
+      { "import": "@/lib/cn", "exports": ["cn"] }
+    ]
+  },
+  "vocabulary": {
+    "imports": {
+      "alias": "@/* -> src/*",
+      "motion": "motion/react (NOT framer-motion)",
+      "router": "react-router (v7, NOT react-router-dom)",
+      "icons": "lucide-react",
+      "forms": "react-hook-form + zod + @hookform/resolvers/zod",
+      "toast": "react-toastify"
+    },
+    "animations": {
+      "tokens": ["animate-fade-in", "animate-fade-out", "animate-scale-in", "animate-scale-out", "animate-slide-up", "animate-slide-down"],
+      "easing": ["ease-out-expo", "ease-out-quart", "ease-in-out-quart"],
+      "usage": "Hook to Radix data-[state=open]/data-[state=closed] for portalled primitives; use motion's AnimatePresence for route-level transitions."
+    },
+    "styling": {
+      "framework": "Tailwind v4 CSS-first",
+      "noConfig": "There is NO tailwind.config.js or postcss.config.js. Customize via @theme blocks in src/index.css."
+    }
+  }
+}
