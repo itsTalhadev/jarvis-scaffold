@@ -71,7 +71,16 @@
       { "import": "@/components/ui/Button", "exports": ["Button"] },
       { "import": "@/components/ui/Dialog", "exports": ["Dialog", "DialogTrigger", "DialogContent", "DialogHeader", "DialogTitle", "DialogDescription", "DialogFooter", "DialogClose"] },
       { "import": "@/components/ui/Tooltip", "exports": ["Tooltip", "TooltipTrigger", "TooltipContent"] },
-      { "import": "@/components/ui/Skeleton", "exports": ["Skeleton"] }
+      { "import": "@/components/ui/Skeleton", "exports": ["Skeleton"] },
+      { "import": "@/components/ui/Input", "exports": ["Input"] },
+      { "import": "@/components/ui/Textarea", "exports": ["Textarea"] },
+      { "import": "@/components/ui/Label", "exports": ["Label"] },
+      { "import": "@/components/ui/Select", "exports": ["Select", "SelectGroup", "SelectValue", "SelectTrigger", "SelectContent", "SelectLabel", "SelectItem", "SelectSeparator"] },
+      { "import": "@/components/ui/Checkbox", "exports": ["Checkbox"] },
+      { "import": "@/components/ui/Switch", "exports": ["Switch"] },
+      { "import": "@/components/ui/Card", "exports": ["Card", "CardHeader", "CardTitle", "CardDescription", "CardContent", "CardFooter"] },
+      { "import": "@/components/ui/Badge", "exports": ["Badge"] },
+      { "import": "@/components/ui/Form", "exports": ["Form", "FormField", "FormItem", "FormLabel", "FormControl", "FormControlSlot", "FormDescription", "FormMessage", "useFormField"] }
     ],
     "transitions": [
       { "import": "@/components/transitions/PageTransition", "exports": ["PageTransition"] }
