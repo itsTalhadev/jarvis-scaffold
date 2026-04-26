@@ -1,0 +1,100 @@
+name: Release scaffold tarball
+
+on:
+  push:
+    tags:
+      - 'react-vite-v*'
+
+permissions:
+  contents: read
+
+env:
+  TEMPLATE_NAME: react-vite
+  S3_BUCKET: jarvis-templates
+  AWS_REGION: us-east-1
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve version from tag
+        id: version
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          VERSION="${TAG#${TEMPLATE_NAME}-v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Resolved version: $VERSION"
+
+      - name: Sanity-check manifest version matches tag
+        run: |
+          MANIFEST_VERSION=$(node -p "require('./manifest.json').version")
+          if [ "$MANIFEST_VERSION" != "${{ steps.version.outputs.version }}" ]; then
+            echo "::error::manifest.json version ($MANIFEST_VERSION) does not match tag (${{ steps.version.outputs.version }})"
+            exit 1
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build (smoke test)
+        run: npm run build
+
+      - name: Pack tarball
+        id: pack
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          ARCHIVE="${TEMPLATE_NAME}-${VERSION}.tar.gz"
+          tar -czf "$ARCHIVE" \
+            --exclude='./.git' \
+            --exclude='./node_modules' \
+            --exclude='./dist' \
+            --exclude='./.github' \
+            .
+          ls -lh "$ARCHIVE"
+          echo "archive=$ARCHIVE" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload tarball + manifest to S3
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          ARCHIVE="${{ steps.pack.outputs.archive }}"
+          PREFIX="s3://${S3_BUCKET}/${TEMPLATE_NAME}/${VERSION}"
+          aws s3 cp "$ARCHIVE" "${PREFIX}/${ARCHIVE}" \
+            --content-type application/gzip \
+            --cache-control "public, max-age=31536000, immutable"
+          aws s3 cp manifest.json "${PREFIX}/manifest.json" \
+            --content-type application/json \
+            --cache-control "public, max-age=31536000, immutable"
+
+      - name: Update latest.json pointer
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          echo "{\"stable\":\"${VERSION}\"}" > latest.json
+          aws s3 cp latest.json "s3://${S3_BUCKET}/${TEMPLATE_NAME}/latest.json" \
+            --content-type application/json \
+            --cache-control "public, max-age=60"
+
+      - name: Summary
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          echo "Released ${TEMPLATE_NAME}@${VERSION}" >> $GITHUB_STEP_SUMMARY
+          echo "S3 prefix: s3://${S3_BUCKET}/${TEMPLATE_NAME}/${VERSION}/" >> $GITHUB_STEP_SUMMARY
+          echo "latest.json updated to ${VERSION}" >> $GITHUB_STEP_SUMMARY
