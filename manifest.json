@@ -3,9 +3,9 @@
   "name": "react-vite",
   "version": "1.0.0",
   "displayName": "React + Vite + Tailwind v4",
-  "description": "Default Jarvis scaffold: React 19, Vite 7, Tailwind v4, Redux Toolkit, react-router v7, motion, Radix primitives, Inter font.",
+  "description": "Default Jarvis scaffold: React 19, Vite 7, Node 24+, Tailwind v4, Redux Toolkit, react-router v7, motion, Radix primitives, Inter font.",
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=24.0.0"
   },
   "mountPoints": {
     "appRoot": "src/App.tsx",

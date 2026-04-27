@@ -2,10 +2,14 @@ import * as React from 'react'
 import * as SwitchPrimitive from '@radix-ui/react-switch'
 import { cn } from '@/lib/cn'
 
-export const Switch = React.forwardRef<
-  React.ComponentRef<typeof SwitchPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>
->(function Switch({ className, ...props }, ref) {
+type SwitchRoot = typeof SwitchPrimitive.Root
+type SwitchRef = React.ComponentRef<SwitchRoot>
+type SwitchProps = React.ComponentPropsWithoutRef<SwitchRoot>
+
+export const Switch = React.forwardRef<SwitchRef, SwitchProps>(function Switch(
+  { className, ...props },
+  ref,
+) {
   return (
     <SwitchPrimitive.Root
       ref={ref}
