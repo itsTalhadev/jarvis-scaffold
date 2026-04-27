@@ -89,7 +89,8 @@ This is what keeps Jarvis-generated apps consistent, auditable, and unbreakable 
 2. Bump `manifest.json` `version` (semver).
 3. Tag: `git tag react-vite-v<version> && git push origin react-vite-v<version>`.
 4. The release workflow ([`.github/workflows/release.yml`](./.github/workflows/release.yml)) builds, lints, packs into a tarball, and uploads to S3 alongside `manifest.json`. It also updates `latest.json`.
-5. Existing Jarvis projects stay on their pinned version. New projects pick up the new template once `latest.json` flips.
+5. **S3 layout:** objects go under `s3://<bucket>/jarvis-scaffold/react-vite/…` (prefix matches jarvis-backend `JARVIS_SCAFFOLD_S3_PREFIX`, default `jarvis-scaffold`). Set workflow `S3_BUCKET` to the **same** bucket as jarvis-backend `AWS_S3_BUCKET` so revisions (`projects/<id>/…`) and scaffold assets live together.
+6. Existing Jarvis projects stay on their pinned version. New projects pick up the new template once `latest.json` flips.
 
 ## License
 
