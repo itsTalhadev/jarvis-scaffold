@@ -29,11 +29,13 @@ echo "Publishing ${NAME}@${VERSION} → s3://${S3_BUCKET}/${PREFIX}/${NAME}/ …
 TMP_ARCHIVE="$(mktemp -t "${ARCHIVE%.tar.gz}.XXXXXX.tar.gz")"
 trap 'rm -f "$TMP_ARCHIVE" latest.json.tmp 2>/dev/null || true' EXIT
 
+export COPYFILE_DISABLE=1
 tar -czf "$TMP_ARCHIVE" \
   --exclude='./.git' \
   --exclude='./node_modules' \
   --exclude='./dist' \
   --exclude='./.github' \
+  --exclude='./.cursor' \
   .
 
 DEST_PREFIX="s3://${S3_BUCKET}/${PREFIX}/${NAME}/${VERSION}"

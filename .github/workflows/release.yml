@@ -58,11 +58,13 @@ jobs:
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           ARCHIVE="${TEMPLATE_NAME}-${VERSION}.tar.gz"
+          export COPYFILE_DISABLE=1
           tar -czf "$ARCHIVE" \
             --exclude='./.git' \
             --exclude='./node_modules' \
             --exclude='./dist' \
             --exclude='./.github' \
+            --exclude='./.cursor' \
             .
           ls -lh "$ARCHIVE"
           echo "archive=$ARCHIVE" >> "$GITHUB_OUTPUT"
