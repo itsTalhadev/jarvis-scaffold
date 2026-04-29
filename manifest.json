@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "react-vite",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "displayName": "React + Vite + Tailwind v4",
   "description": "Default Jarvis scaffold: React 19, Vite 7, Node 24+, Tailwind v4, Redux Toolkit, react-router v7, motion, Radix primitives, Inter font.",
   "engines": {
@@ -68,7 +68,7 @@
     "ui": [
       { "import": "@/components/ui/Button", "exports": ["Button"] },
       { "import": "@/components/ui/Dialog", "exports": ["Dialog", "DialogTrigger", "DialogContent", "DialogHeader", "DialogTitle", "DialogDescription", "DialogFooter", "DialogClose"] },
-      { "import": "@/components/ui/Tooltip", "exports": ["Tooltip", "TooltipTrigger", "TooltipContent"] },
+      { "import": "@/components/ui/Tooltip", "exports": ["Tooltip", "TooltipTrigger", "TooltipContent", "TooltipProvider"] },
       { "import": "@/components/ui/Skeleton", "exports": ["Skeleton"] },
       { "import": "@/components/ui/Input", "exports": ["Input"] },
       { "import": "@/components/ui/Textarea", "exports": ["Textarea"] },
