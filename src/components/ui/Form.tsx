@@ -36,7 +36,16 @@ import {
   type FieldValues,
 } from 'react-hook-form'
 import * as LabelPrimitive from '@radix-ui/react-label'
+import { Slot } from '@radix-ui/react-slot'
 import { cn } from '@/lib/cn'
+
+type FormLabelRoot = typeof LabelPrimitive.Root
+type FormLabelRef = React.ComponentRef<FormLabelRoot>
+type FormLabelProps = React.ComponentPropsWithoutRef<FormLabelRoot>
+
+type SlotRoot = typeof Slot
+type FormControlSlotRef = React.ComponentRef<SlotRoot>
+type FormControlSlotProps = React.ComponentPropsWithoutRef<SlotRoot>
 
 // ── Form root ─────────────────────────────────────────────────────
 const Form = FormProvider
@@ -102,10 +111,10 @@ const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
 )
 
 // ── FormLabel ─────────────────────────────────────────────────────
-const FormLabel = React.forwardRef<
-  React.ComponentRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(function FormLabel({ className, ...props }, ref) {
+const FormLabel = React.forwardRef<FormLabelRef, FormLabelProps>(function FormLabel(
+  { className, ...props },
+  ref,
+) {
   const { error, formItemId } = useFormField()
   return (
     <LabelPrimitive.Root
@@ -122,30 +131,38 @@ const FormLabel = React.forwardRef<
 })
 
 // ── FormControl ───────────────────────────────────────────────────
-const FormControl = React.forwardRef<
-  React.ComponentRef<typeof React.Fragment>,
-  React.ComponentPropsWithoutRef<typeof React.Fragment>
->(function FormControl({ ...props }, ref) {
-  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
-  return (
-    <React.Fragment
-      {...props}
-      // Forward id + aria attributes to the first child control.
-      // Works with shadcn-style forwardRef primitives (Input, Textarea, Select trigger, etc.)
-    />
-  )
-})
+const FormControl = React.forwardRef<FormControlSlotRef, FormControlSlotProps>(
+  function FormControl({ ...props }, ref) {
+    const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
+    return (
+      <Slot
+        ref={ref}
+        id={formItemId}
+        aria-describedby={
+          error ? `${formDescriptionId} ${formMessageId}` : formDescriptionId
+        }
+        aria-invalid={error ? true : undefined}
+        {...props}
+      />
+    )
+  },
+)
 
 // A thin wrapper that passes aria attrs to its child.
-function FormControlSlot({ children }: { children: React.ReactElement }) {
+function FormControlSlot({
+  children,
+}: {
+  children: React.ReactElement<React.HTMLAttributes<HTMLElement>>
+}) {
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
-  return React.cloneElement(children, {
+  const attrs: React.HTMLAttributes<HTMLElement> = {
     id: formItemId,
     'aria-describedby': error
       ? `${formDescriptionId} ${formMessageId}`
       : formDescriptionId,
     'aria-invalid': !!error,
-  })
+  }
+  return React.cloneElement(children, attrs)
 }
 
 // ── FormDescription ───────────────────────────────────────────────

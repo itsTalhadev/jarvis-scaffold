@@ -3,14 +3,19 @@ import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
+type DOverlay = typeof DialogPrimitive.Overlay
+type DContent = typeof DialogPrimitive.Content
+type DTitle = typeof DialogPrimitive.Title
+type DDescription = typeof DialogPrimitive.Description
+
 const Dialog = DialogPrimitive.Root
 const DialogTrigger = DialogPrimitive.Trigger
 const DialogClose = DialogPrimitive.Close
 const DialogPortal = DialogPrimitive.Portal
 
 const DialogOverlay = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
+  React.ComponentRef<DOverlay>,
+  React.ComponentPropsWithoutRef<DOverlay>
 >(function DialogOverlay({ className, ...props }, ref) {
   return (
     <DialogPrimitive.Overlay
@@ -26,8 +31,8 @@ const DialogOverlay = React.forwardRef<
 })
 
 const DialogContent = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+  React.ComponentRef<DContent>,
+  React.ComponentPropsWithoutRef<DContent>
 >(function DialogContent({ className, children, ...props }, ref) {
   return (
     <DialogPortal>
@@ -72,8 +77,8 @@ function DialogFooter({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
 }
 
 const DialogTitle = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+  React.ComponentRef<DTitle>,
+  React.ComponentPropsWithoutRef<DTitle>
 >(function DialogTitle({ className, ...props }, ref) {
   return (
     <DialogPrimitive.Title
@@ -85,8 +90,8 @@ const DialogTitle = React.forwardRef<
 })
 
 const DialogDescription = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+  React.ComponentRef<DDescription>,
+  React.ComponentPropsWithoutRef<DDescription>
 >(function DialogDescription({ className, ...props }, ref) {
   return (
     <DialogPrimitive.Description

@@ -10,8 +10,10 @@ permissions:
 
 env:
   TEMPLATE_NAME: react-vite
-  S3_BUCKET: jarvis-templates
-  AWS_REGION: us-east-1
+  # Must match jarvis-backend `AWS_S3_BUCKET` (revisions + scaffold share one bucket).
+  S3_BUCKET: jarvis-projects
+  SCAFFOLD_PREFIX: jarvis-scaffold
+  AWS_REGION: eu-west-3
 
 jobs:
   release:
@@ -39,7 +41,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install
@@ -56,11 +58,13 @@ jobs:
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           ARCHIVE="${TEMPLATE_NAME}-${VERSION}.tar.gz"
+          export COPYFILE_DISABLE=1
           tar -czf "$ARCHIVE" \
             --exclude='./.git' \
             --exclude='./node_modules' \
             --exclude='./dist' \
             --exclude='./.github' \
+            --exclude='./.cursor' \
             .
           ls -lh "$ARCHIVE"
           echo "archive=$ARCHIVE" >> "$GITHUB_OUTPUT"
@@ -76,7 +80,7 @@ jobs:
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           ARCHIVE="${{ steps.pack.outputs.archive }}"
-          PREFIX="s3://${S3_BUCKET}/${TEMPLATE_NAME}/${VERSION}"
+          PREFIX="s3://${S3_BUCKET}/${SCAFFOLD_PREFIX}/${TEMPLATE_NAME}/${VERSION}"
           aws s3 cp "$ARCHIVE" "${PREFIX}/${ARCHIVE}" \
             --content-type application/gzip \
             --cache-control "public, max-age=31536000, immutable"
@@ -88,7 +92,7 @@ jobs:
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           echo "{\"stable\":\"${VERSION}\"}" > latest.json
-          aws s3 cp latest.json "s3://${S3_BUCKET}/${TEMPLATE_NAME}/latest.json" \
+          aws s3 cp latest.json "s3://${S3_BUCKET}/${SCAFFOLD_PREFIX}/${TEMPLATE_NAME}/latest.json" \
             --content-type application/json \
             --cache-control "public, max-age=60"
 
@@ -96,5 +100,5 @@ jobs:
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           echo "Released ${TEMPLATE_NAME}@${VERSION}" >> $GITHUB_STEP_SUMMARY
-          echo "S3 prefix: s3://${S3_BUCKET}/${TEMPLATE_NAME}/${VERSION}/" >> $GITHUB_STEP_SUMMARY
+          echo "S3 prefix: s3://${S3_BUCKET}/${SCAFFOLD_PREFIX}/${TEMPLATE_NAME}/${VERSION}/" >> $GITHUB_STEP_SUMMARY
           echo "latest.json updated to ${VERSION}" >> $GITHUB_STEP_SUMMARY
