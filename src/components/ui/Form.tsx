@@ -1,30 +1,12 @@
 /**
- * react-hook-form + Radix Label integration.
+ * react-hook-form + Radix Label integration (Jarvis stack).
  *
- * Usage:
- * ```tsx
- * import { useForm } from 'react-hook-form'
- * import { zodResolver } from '@hookform/resolvers/zod'
- * import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/Form'
- *
- * const form = useForm({ resolver: zodResolver(schema) })
- *
- * <Form {...form}>
- *   <form onSubmit={form.handleSubmit(onSubmit)}>
- *     <FormField
- *       control={form.control}
- *       name="email"
- *       render={({ field }) => (
- *         <FormItem>
- *           <FormLabel>Email</FormLabel>
- *           <FormControl><Input {...field} /></FormControl>
- *           <FormMessage />
- *         </FormItem>
- *       )}
- *     />
- *   </form>
- * </Form>
- * ```
+ * Use with: react-hook-form, @hookform/resolvers/zod, zod. Export surface:
+ * Form, FormField, FormItem, FormLabel, FormControl, FormControlSlot,
+ * FormDescription, FormMessage, useFormField — wire FormProvider root,
+ * nest native form + FormField render prop, connect Input/Textarea from
+ * @/components/ui. Tooltip has no `content` prop (compound components only).
+ * Any file containing JSX must use the `.tsx` extension, never `.ts`.
  */
 import * as React from 'react'
 import {
@@ -201,6 +183,8 @@ const FormMessage = React.forwardRef<
   )
 })
 
+/* FormField + useFormField are intentionally exported together (shadcn-style). */
+/* eslint-disable react-refresh/only-export-components */
 export {
   Form,
   FormField,
