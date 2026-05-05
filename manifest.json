@@ -104,7 +104,8 @@
     },
     "styling": {
       "framework": "Tailwind v4 CSS-first",
-      "noConfig": "There is NO tailwind.config.js or postcss.config.js. Customize via @theme blocks in src/index.css."
+      "noConfig": "There is NO tailwind.config.js or postcss.config.js. Customize via @theme blocks in src/index.css.",
+      "colorTokens": "The scaffold's @theme pre-defines 20 semantic color tokens — override VALUES only, never drop names: background, foreground, card, card-foreground, popover, popover-foreground, primary, primary-foreground, secondary, secondary-foreground, muted, muted-foreground, accent, accent-foreground, destructive, destructive-foreground, border, input, ring. These map to bg-background, text-foreground, bg-primary, etc."
     }
   }
 }
