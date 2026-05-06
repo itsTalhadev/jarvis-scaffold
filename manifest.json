@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "react-vite",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "displayName": "React + Vite + Tailwind v4",
   "description": "Default Jarvis scaffold: React 19, Vite 7, Node 24+, Tailwind v4, Redux Toolkit, react-router v7, motion, react-hook-form + zod, react-toastify, Inter font. Build UI with semantic HTML, Tailwind utilities, and optional local components under src/components/.",
   "engines": {
