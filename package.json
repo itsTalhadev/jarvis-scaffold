@@ -9,7 +9,8 @@
   "scripts": {
     "verify:manifest": "node tooling/verify-manifest-contract.mjs",
     "dev": "vite",
-    "build": "npm run verify:manifest && tsc -b && vite build",
+    "build": "tsc -b && vite build",
+    "build:verify": "npm run verify:manifest && npm run build",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
