@@ -7,8 +7,9 @@
     "node": ">=24.0.0"
   },
   "scripts": {
+    "verify:manifest": "node tooling/verify-manifest-contract.mjs",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run verify:manifest && tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
