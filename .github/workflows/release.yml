@@ -59,7 +59,8 @@ jobs:
           VERSION="${{ steps.version.outputs.version }}"
           ARCHIVE="${TEMPLATE_NAME}-${VERSION}.tar.gz"
           export COPYFILE_DISABLE=1
-          tar -czf "$ARCHIVE" \
+          # CI runners sometimes touch files mid-archive; treat as non-fatal (GNU tar).
+          tar --warning=no-file-changed -czf "$ARCHIVE" \
             --exclude='./.git' \
             --exclude='./node_modules' \
             --exclude='./dist' \
