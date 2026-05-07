@@ -58,15 +58,8 @@ jobs:
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           ARCHIVE="${TEMPLATE_NAME}-${VERSION}.tar.gz"
-          export COPYFILE_DISABLE=1
-          # CI runners sometimes touch files mid-archive; treat as non-fatal (GNU tar).
-          tar --warning=no-file-changed -czf "$ARCHIVE" \
-            --exclude='./.git' \
-            --exclude='./node_modules' \
-            --exclude='./dist' \
-            --exclude='./.github' \
-            --exclude='./.cursor' \
-            .
+          # Tracked sources only (no node_modules/dist); avoids GNU tar "file changed as we read it" on CI.
+          git archive --format=tar HEAD -- . ":(exclude).github" ":(exclude).cursor" | gzip -n > "$ARCHIVE"
           ls -lh "$ARCHIVE"
           echo "archive=$ARCHIVE" >> "$GITHUB_OUTPUT"
 
